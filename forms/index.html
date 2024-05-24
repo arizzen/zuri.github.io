@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Form</title>
+<style>
+.error {
+    color: red;
+}
+</style>
+</head>
+<body>
+
+<h2>Simple Form</h2>
+<form id="myForm" action="#" method="post" onsubmit="return validateForm()">
+    <label for="firstName">First Name:</label><br>
+    <input type="text" id="firstName" name="firstName"><br>
+    <span id="firstNameError" class="error"></span><br>
+    
+    <label for="lastName">Last Name:</label><br>
+    <input type="text" id="lastName" name="lastName"><br>
+    <span id="lastNameError" class="error"></span><br>
+    
+    <label for="otherNames">Other Names:</label><br>
+    <input type="text" id="otherNames" name="otherNames"><br><br>
+    
+    <label for="email">Email Address:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <span id="emailError" class="error"></span><br>
+    
+    <label for="phone">Phone Number:</label><br>
+    <input type="tel" id="phone" name="phone" minlength="10" maxlength="10"><br>
+    <span id="phoneError" class="error"></span><br>
+    
+    <label for="gender">Gender:</label><br>
+    <select id="gender" name="gender">
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select><br>
+    <span id="genderError" class="error"></span><br>
+    
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm() {
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var otherNames = document.getElementById("otherNames").value;
+    var email = document.getElementById("email").value;
+    var phone = document.getElementById("phone").value;
+    var gender = document.getElementById("gender").value;
+    
+    var firstNameError = document.getElementById("firstNameError");
+    var lastNameError = document.getElementById("lastNameError");
+    var emailError = document.getElementById("emailError");
+    var phoneError = document.getElementById("phoneError");
+    var genderError = document.getElementById("genderError");
+    
+    var valid = true;
+    
+    // Reset previous errors
+    firstNameError.innerHTML = "";
+    lastNameError.innerHTML = "";
+    emailError.innerHTML = "";
+    phoneError.innerHTML = "";
+    genderError.innerHTML = "";
+    
+    // Validation
+    if (firstName.length < 1 || lastName.length < 1) {
+        valid = false;
+        if (firstName.length < 1) {
+            firstNameError.innerHTML = "First name is required";
+        }
+        if (lastName.length < 1) {
+            lastNameError.innerHTML = "Last name is required";
+        }
+    }
+    
+    if (!/^[a-zA-Z]+$/.test(firstName) || !/^[a-zA-Z]+$/.test(lastName)) {
+        valid = false;
+        if (!/^[a-zA-Z]+$/.test(firstName)) {
+            firstNameError.innerHTML = "First name can only contain letters";
+        }
+        if (!/^[a-zA-Z]+$/.test(lastName)) {
+            lastNameError.innerHTML = "Last name can only contain letters";
+        }
+    }
+    
+    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+        valid = false;
+        emailError.innerHTML = "Invalid email address";
+    }
+    
+    if (phone.length !== 10 || isNaN(phone)) {
+        valid = false;
+        phoneError.innerHTML = "Phone number must be 10 digits";
+    }
+    
+    if (gender === "") {
+        valid = false;
+        genderError.innerHTML = "Gender is required";
+    }
+    
+    // If validation passes, submit form data
+    if (valid) {
+        var formData = {
+            "firstName": firstName,
+            "lastName": lastName,
+            "otherNames": otherNames,
+            "email": email,
+            "phone": phone,
+            "gender": gender
+        };
+        
+        // Convert formData to JSON
+        var jsonData = JSON.stringify(formData);
+        
+        // Send JSON data to server or save it to a file (e.g., database.json)
+        // Here, I'll just display the JSON data in the console
+        console.log(jsonData);
+    }
+    
+    return valid;
+}
+</script>
+
+</body>
+</html>
